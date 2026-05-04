@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package xynq.v1;
+
+message DeviceState {
+  MediaState media = 2;
+  SoundState sound = 3;
+  BatteryState battery = 4;
+}
+
+message Notification {
+  uint32 id = 1;
+  string title = 2;
+  string content = 3;
+  string app_name = 4;
+}
+
+message MediaState {
+  string title = 1;
+  string app_name = 2;
+  uint32 position = 3;
+  uint32 duration = 4;
+  bool is_playing = 5;
+}
+
+message SoundState {
+  oneof mode {
+    SoundNormal normal = 1;
+    SoundSilent silent = 2;
+  }
+}
+
+message BatteryState {
+  oneof state {
+    BatteryDischarging discharging = 1;
+    BatteryCharging charging = 2;
+    BatteryFull full = 3;
+  }
+}
+
+message BatteryDischarging {
+  uint32 level = 1;
+}
+
+message BatteryCharging {
+  uint32 level = 1;
+}
+
+message BatteryFull {}
+
+message SoundNormal {
+  uint32 volume = 1;
+}
+
+message SoundSilent {}
+
+message DeviceEvent {
+  oneof kind {
+    NotificationReceived notification_received = 1;
+
+    ClipboardTextCopied clipboard_text_copied = 3;
+    ClipboardImageCopied clipboard_image_copied = 4;
+
+    MediaStarted media_started = 5;
+    MediaPlaying media_playing = 6;
+    MediaPaused media_paused = 7;
+
+    SoundStateChanged sound_state_changed = 8;
+    BatteryStateChanged battery_state_changed = 9;
+  }
+}
+
+message NotificationReceived {
+  Notification notification = 1;
+}
+
+message NotificationDismissed {
+  uint32 id = 1;
+}
+
+message ClipboardTextCopied {
+  string text = 1;
+}
+
+message ClipboardImageCopied {
+  bytes image_data = 1;
+}
+
+message MediaStarted {
+  MediaState media = 1;
+}
+
+message MediaPlaying {
+  uint32 position = 1;
+}
+
+message MediaPaused {
+  uint32 position = 1;
+}
+
+message SoundStateChanged {
+  SoundState state = 1;
+}
+
+message BatteryStateChanged {
+  BatteryState state = 1;
+}
+
+message DeviceCommand {
+  oneof kind {
+    MediaPlayPause media_play_pause = 1;
+    MediaSeek media_seek = 2;
+    MediaNext media_next = 3;
+    MediaPrevious media_previous = 4;
+
+    SoundUpdateState sound_update_state = 5;
+  }
+}
+
+message MediaPlayPause {}
+
+message MediaSeek {
+  uint32 position = 1;
+}
+
+message MediaNext {}
+
+message MediaPrevious {}
+
+message SoundUpdateState {
+  SoundState state = 1;
+}

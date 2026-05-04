@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package xynq.v1;
+
+import "xynq/v1/config.proto";
+import "xynq/v1/device.proto";
+import "xynq/v1/id.proto";
+
+message IpcEvent {
+  oneof kind {
+    PeerConnected peer_connected = 1;
+    PeerDisconnected peer_disconnected = 2;
+    DeviceStateReceived device_state_received = 3;
+    DeviceEventReceived device_event_received = 4;
+    DeviceCommandReceived device_command_received = 5;
+  }
+}
+
+message PeerConnected {
+  PeerId peer_id = 1;
+  string peer_name = 2;
+}
+
+message PeerDisconnected {
+  PeerId peer_id = 1;
+}
+
+message DeviceStateReceived {
+  PeerId peer_id = 1;
+  DeviceState state = 2;
+}
+
+message DeviceEventReceived {
+  PeerId peer_id = 1;
+  DeviceEvent event = 2;
+}
+
+message DeviceCommandReceived {
+  PeerId peer_id = 1;
+  DeviceCommand command = 2;
+}
+
+message IpcCommand {
+  oneof kind {
+    RunNetworkService run_network_service = 1;
+    TriggerRetry trigger_retry = 2;
+    SendDeviceState send_device_state = 3;
+    BroadcastDeviceEvent broadcast_device_event = 4;
+    SendDeviceCommand send_device_command = 5;
+  }
+}
+
+message RunNetworkService {
+  PeerConfig peer_config = 1;
+  LanConfig lan_config = 2;
+  RelayConfig relay_config = 3;
+}
+
+message TriggerRetry {}
+
+message SendDeviceState {
+  PeerId peer_id = 1;
+  DeviceState state = 2;
+}
+
+message BroadcastDeviceEvent {
+  DeviceEvent event = 1;
+}
+
+message SendDeviceCommand {
+  PeerId peer_id = 1;
+  DeviceCommand command = 2;
+}

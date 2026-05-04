@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package xynq.v1;
+
+import "xynq/v1/id.proto";
+
+message JoinClusterRequest {
+  ClusterId cluster_id = 1;
+  PeerId peer_id = 2;
+}
+
+message JoinClusterResponse {
+  uint32 peer_count = 1;
+}

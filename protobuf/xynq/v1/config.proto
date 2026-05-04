@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package xynq.v1;
+
+import "xynq/v1/id.proto";
+
+message PeerConfig {
+  ClusterId cluster_id = 1;
+  PeerId peer_id = 2;
+  string peer_name = 3;
+  bytes secret = 4;
+}
+
+message LanConfig {
+  bytes ca_der = 1;
+  bytes cert_der = 2;
+  bytes key_der = 3;
+}
+
+message RelayConfig {
+  string url = 1;
+  uint32 port = 2;
+  bytes cert_der = 3;
+}
