@@ -4,7 +4,6 @@ package xynq.v1;
 
 import "xynq/v1/config.proto";
 import "xynq/v1/device.proto";
-import "xynq/v1/id.proto";
 
 message IpcEvent {
   oneof kind {
@@ -17,26 +16,26 @@ message IpcEvent {
 }
 
 message PeerConnected {
-  PeerId peer_id = 1;
+  string peer_id = 1;
   string peer_name = 2;
 }
 
 message PeerDisconnected {
-  PeerId peer_id = 1;
+  string peer_id = 1;
 }
 
 message DeviceStateReceived {
-  PeerId peer_id = 1;
+  string peer_id = 1;
   DeviceState state = 2;
 }
 
 message DeviceEventReceived {
-  PeerId peer_id = 1;
+  string peer_id = 1;
   DeviceEvent event = 2;
 }
 
 message DeviceCommandReceived {
-  PeerId peer_id = 1;
+  string peer_id = 1;
   DeviceCommand command = 2;
 }
 
@@ -59,7 +58,7 @@ message RunNetworkService {
 message TriggerRetry {}
 
 message SendDeviceState {
-  PeerId peer_id = 1;
+  string peer_id = 1;
   DeviceState state = 2;
 }
 
@@ -68,6 +67,6 @@ message BroadcastDeviceEvent {
 }
 
 message SendDeviceCommand {
-  PeerId peer_id = 1;
+  string peer_id = 1;
   DeviceCommand command = 2;
 }
