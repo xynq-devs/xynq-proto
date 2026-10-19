@@ -3,22 +3,14 @@ syntax = "proto3";
 package xynq.v1;
 
 message DeviceState {
-  MediaState media = 2;
-  SoundState sound = 3;
-  BatteryState battery = 4;
+  BatteryState battery = 1;
+  SoundState sound = 2;
+  MediaState media = 3;
 }
 
-message Notification {
-  uint32 id = 1;
-  string title = 2;
-  string content = 3;
-  string app_name = 4;
-}
-
-message MediaState {
-  string title = 1;
-  string app_name = 2;
-  bool is_playing = 5;
+message BatteryState {
+  uint32 level = 1;
+  bool is_charging = 2;
 }
 
 message SoundState {
@@ -26,60 +18,30 @@ message SoundState {
   bool is_muted = 2;
 }
 
-message BatteryState {
-  uint32 level = 1;
-  bool is_charging = 2;
-  bool is_full = 3;
+message MediaState {
+  string title = 1;
+  string app_name = 2;
+  bool is_playing = 3;
 }
 
 message DeviceEvent {
   oneof kind {
-    NotificationReceived notification_received = 1;
+    BatteryState battery_state_changed = 1;
+    SoundState sound_state_changed = 2;
+    MediaState media_state_changed = 3;
 
-    ClipboardTextCopied clipboard_text_copied = 3;
-    ClipboardImageCopied clipboard_image_copied = 4;
-
-    MediaStateChanged media_state_changed = 5;
-    SoundStateChanged sound_state_changed = 6;
-    BatteryStateChanged battery_state_changed = 7;
+    string clipboard_text_copied = 4;
+    bytes clipboard_image_copied = 5;
   }
-}
-
-message NotificationReceived {
-  Notification notification = 1;
-}
-
-message NotificationDismissed {
-  uint32 id = 1;
-}
-
-message ClipboardTextCopied {
-  string text = 1;
-}
-
-message ClipboardImageCopied {
-  bytes image_data = 1;
-}
-
-message MediaStateChanged {
-  MediaState media_state = 1;
-}
-
-message SoundStateChanged {
-  SoundState sound_state = 1;
-}
-
-message BatteryStateChanged {
-  BatteryState battery_state = 1;
 }
 
 message DeviceCommand {
   oneof kind {
-    MediaPlayPause media_play_pause = 1;
+    SoundState sound_update_state = 1;
+
+    MediaPlayPause media_play_pause = 2;
     MediaNext media_next = 3;
     MediaPrevious media_previous = 4;
-
-    SoundUpdateState sound_update_state = 5;
   }
 }
 
@@ -88,7 +50,3 @@ message MediaPlayPause {}
 message MediaNext {}
 
 message MediaPrevious {}
-
-message SoundUpdateState {
-  SoundState state = 1;
-}
